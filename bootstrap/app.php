@@ -11,6 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(at: '*');
         // The default web middleware handles sessions, cookies, and CSRF protection.
     })
     ->withExceptions(function (Exceptions $exceptions): void {
