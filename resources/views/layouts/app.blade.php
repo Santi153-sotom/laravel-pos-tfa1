@@ -18,6 +18,9 @@
         nav { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
         nav a { padding: 10px 13px; border-radius: 9px; color: #cfdbdf; font-size: 14px; font-weight: 600; transition: .18s ease; }
         nav a:hover, nav a.active { color: white; background: rgba(255,255,255,.12); }
+        nav form { margin: 0; }
+        .nav-action { padding: 10px 13px; border: 0; border-radius: 9px; background: transparent; color: #cfdbdf; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: .18s ease; }
+        .nav-action:hover { color: white; background: rgba(255,255,255,.12); }
         main { width: min(1120px, calc(100% - 40px)); min-height: calc(100vh - 150px); margin: 0 auto; padding: 54px 0 72px; }
         .eyebrow { margin: 0 0 12px; color: var(--green); font-size: 12px; letter-spacing: .14em; font-weight: 800; text-transform: uppercase; }
         h1 { margin: 0; font-size: clamp(34px, 5vw, 52px); line-height: 1.08; letter-spacing: -.045em; }
@@ -66,7 +69,7 @@
         @media (max-width: 720px) {
             .topbar-inner { width: min(100% - 28px, 1120px); align-items: flex-start; flex-direction: column; padding: 15px 0; gap: 12px; }
             nav { width: 100%; gap: 2px; }
-            nav a { padding: 8px 10px; font-size: 13px; }
+            nav a, .nav-action { padding: 8px 10px; font-size: 13px; }
             main { width: min(100% - 28px, 1120px); padding-top: 30px; }
             .card-grid, .about-grid { grid-template-columns: 1fr; }
             .page-head { align-items: flex-start; flex-direction: column; }
@@ -101,6 +104,18 @@
                 @endif
 
                 <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">Staff</a>
+
+                @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="nav-action">Log out</button>
+                    </form>
+                @endauth
+
+                @guest
+                    <a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">Log in</a>
+                    <a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }}">Register</a>
+                @endguest
             </nav>
         </div>
     </header>
