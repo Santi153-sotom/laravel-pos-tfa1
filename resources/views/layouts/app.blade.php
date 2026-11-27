@@ -62,7 +62,16 @@
         .route-list li:last-child { border: 0; }
         code { color: var(--green-dark); font-weight: 700; }
         footer { padding: 20px; border-top: 1px solid var(--line); background: white; color: #819099; text-align: center; font-size: 12px; }
-        @media (max-width: 720px) { .topbar-inner { width: min(100% - 28px, 1120px); align-items: flex-start; flex-direction: column; padding: 15px 0; gap: 12px; } nav { width: 100%; gap: 2px; } nav a { padding: 8px 10px; font-size: 13px; } main { width: min(100% - 28px, 1120px); padding-top: 30px; } .card-grid, .about-grid { grid-template-columns: 1fr; } .page-head { align-items: flex-start; flex-direction: column; } th, td { padding: 13px 14px; } }
+
+        @media (max-width: 720px) {
+            .topbar-inner { width: min(100% - 28px, 1120px); align-items: flex-start; flex-direction: column; padding: 15px 0; gap: 12px; }
+            nav { width: 100%; gap: 2px; }
+            nav a { padding: 8px 10px; font-size: 13px; }
+            main { width: min(100% - 28px, 1120px); padding-top: 30px; }
+            .card-grid, .about-grid { grid-template-columns: 1fr; }
+            .page-head { align-items: flex-start; flex-direction: column; }
+            th, td { padding: 13px 14px; }
+        }
     </style>
 </head>
 <body>
@@ -72,11 +81,26 @@
                 <span class="brand-mark">P</span>
                 <span>POS Accounts<small>Point of sale directory</small></span>
             </a>
+
             <nav aria-label="Main navigation">
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
+
+                @if (\Illuminate\Support\Facades\Route::has('products.index'))
+                    <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">Products</a>
+                @endif
+
                 <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">Customers</a>
-                <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">Users</a>
+
+                @if (\Illuminate\Support\Facades\Route::has('sales.create'))
+                    <a href="{{ route('sales.create') }}" class="{{ request()->routeIs('sales.create', 'sales.store') ? 'active' : '' }}">Record Sale</a>
+                @endif
+
+                @if (\Illuminate\Support\Facades\Route::has('sales.index'))
+                    <a href="{{ route('sales.index') }}" class="{{ request()->routeIs('sales.index') ? 'active' : '' }}">Sales History</a>
+                @endif
+
+                <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">Staff</a>
             </nav>
         </div>
     </header>
@@ -85,6 +109,6 @@
         @yield('content')
     </main>
 
-    <footer>Laravel POS Accounts · TFA1 static data exercise</footer>
+    <footer>Laravel POS System · Products, customers, staff, and sales</footer>
 </body>
 </html>

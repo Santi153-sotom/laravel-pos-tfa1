@@ -10,11 +10,8 @@
             <p class="lead">Contact information for customers in the POS system.</p>
         </div>
         <div>
-            <span class="count-pill">{{ count($customers) }} customers</span>
-            <a href="{{ route('customers.create') }}"
-               style="display:inline-block; margin-left:10px; padding:10px 14px; background:#0b514e; color:white; border-radius:8px; text-decoration:none;">
-                + Create Customer
-            </a>
+            <span class="count-pill">{{ $customers->count() }} customers</span>
+            <a class="button" href="{{ route('customers.create') }}">+ Create Customer</a>
         </div>
     </div>
 
@@ -26,22 +23,30 @@
         <table>
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Full name</th>
-                    <th scope="col">Email address</th>
-                    <th scope="col">Phone number</th>
-                    <th scope="col">Actions</th>
+                    <th>#</th>
+                    <th>Full name</th>
+                    <th>Email address</th>
+                    <th>Phone number</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($customers as $customer)
                     <tr>
-                        <td class="number">{{ $customer->id }}</td>
+                        <td class="number">{{ $loop->iteration }}</td>
                         <td class="person">{{ $customer->full_name }}</td>
                         <td class="email">{{ $customer->email }}</td>
-                        <td>{{ $customer->phone }}</td>
+                        <td>{{ $customer->phone ?: '—' }}</td>
                         <td>
                             <a href="{{ route('customers.edit', $customer->id) }}">Edit</a>
+                            <form method="POST"
+                                  action="{{ route('customers.destroy', $customer->id) }}"
+                                  style="display:inline;"
+                                  onsubmit="return confirm('Delete this customer? Their past sales will remain in history.');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @empty

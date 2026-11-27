@@ -41,5 +41,7 @@ class PosSeeder extends Seeder
                 ['full_name' => $user['full_name']]
             );
         }
+
+        $this->call(ProductSeeder::class);
     }
 }
